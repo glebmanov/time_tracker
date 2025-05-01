@@ -53,7 +53,7 @@ defmodule TimeTrackerWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {TimeTrackerWeb.Layouts, :app}
+        layout: {TimeTrackerWeb.Layouts, :root}
 
       unquote(html_helpers())
     end
