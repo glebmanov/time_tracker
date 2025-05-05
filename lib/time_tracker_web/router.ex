@@ -20,6 +20,8 @@ defmodule TimeTrackerWeb.Router do
     get "/", RedirectController, :index
     get "/tasks", PageController, :tasks
     get "/settings", PageController, :settings
+
+    live "/test/timer", Timer
   end
 
   # Other scopes may use custom stacks.
