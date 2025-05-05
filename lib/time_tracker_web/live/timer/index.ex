@@ -3,24 +3,50 @@ defmodule TimeTrackerWeb.Timer do
 
   @tick_interval 1000
 
-  @impl true
   def mount(_params, _session, socket) do
     {:ok, socket |> assign(seconds: 0, timer_ref: nil)}
   end
 
-  @impl true
   def render(assigns) do
     ~H"""
     <div class="flex flex-col items-center">
-      <%= inline_svg("start") %>
       <span class="mb-6">Seconds: {@seconds}</span>
-      <button class="mb-3 p-2" disabled={!is_nil(@timer_ref)} phx-click="start">start</button>
-      <button class="mb-3 p-2" disabled={is_nil(@timer_ref)} phx-click="stop">stop</button>
+
+      <div class="flex">
+        <button
+          type="button"
+          class="mb-3 mr-3 px-4 py-2 flex focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-sm dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+          disabled={!is_nil(@timer_ref)}
+          phx-click="start"
+        >
+          <span class="mr-2">
+            {inline_svg("start")}
+          </span>
+
+          <span>
+            start
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="mb-3 px-4 py-2 flex text-white bg-gray-800 hover:bg-gray-900 focus:outline-none font-medium rounded-lg text-sm dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+          disabled={is_nil(@timer_ref)}
+          phx-click="stop"
+        >
+          <span class="mr-2">
+            {inline_svg("stop")}
+          </span>
+
+          <span>
+            stop
+          </span>
+        </button>
+      </div>
     </div>
     """
   end
 
-  @impl true
   def handle_event("start", _params, %{assigns: %{timer_ref: ref}} = socket) do
     if is_reference(ref) do
       {:noreply, socket}
@@ -30,7 +56,6 @@ defmodule TimeTrackerWeb.Timer do
     end
   end
 
-  @impl true
   def handle_event("stop", _params, %{assigns: %{timer_ref: ref}} = socket) do
     if is_reference(ref) do
       {:ok, :cancel} = :timer.cancel({:interval, ref})
@@ -40,7 +65,6 @@ defmodule TimeTrackerWeb.Timer do
     end
   end
 
-  @impl true
   def handle_info(:tick, socket) do
     {:noreply, update(socket, :seconds, &(&1 + 1))}
   end
