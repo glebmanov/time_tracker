@@ -82,6 +82,9 @@ defmodule TimeTrackerWeb do
 
   defp html_helpers do
     quote do
+      #SVG
+      import TimeTrackerWeb.SVGHelpers
+
       # Translation
       use Gettext, backend: TimeTrackerWeb.Gettext
 
