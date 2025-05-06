@@ -10,6 +10,39 @@ defmodule TimeTrackerWeb.TaskLive.Index do
   end
 
   @impl true
+  def render(assigns) do
+    ~H"""
+    <.header>
+      Tasks
+      <:actions>
+        <.link patch={~p"/tasks/new"}>
+          <.button>New Task</.button>
+        </.link>
+      </:actions>
+    </.header>
+
+    <div :for={task <- @tasks}>
+      <.live_component
+        module={TimeTrackerWeb.TaskLive.TaskComponent}
+        id={task.id}
+        task={task}
+      />
+    </div>
+
+    <.modal :if={@live_action in [:new, :edit]} id="task-modal" show on_cancel={JS.patch(~p"/tasks")}>
+      <.live_component
+        module={TimeTrackerWeb.TaskLive.FormComponent}
+        id={@task.id || :new}
+        title={@page_title}
+        action={@live_action}
+        task={@task}
+        patch={~p"/tasks"}
+      />
+    </.modal>
+    """
+  end
+
+  @impl true
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end

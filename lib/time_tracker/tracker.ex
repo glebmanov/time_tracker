@@ -18,7 +18,7 @@ defmodule TimeTracker.Tracker do
 
   """
   def list_tasks do
-    Repo.all(Task)
+    Repo.all(from t in Task, order_by: [asc: t.inserted_at])
   end
 
   @doc """

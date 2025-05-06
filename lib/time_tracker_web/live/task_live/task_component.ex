@@ -4,28 +4,24 @@ defmodule TimeTrackerWeb.TaskLive.TaskComponent do
   alias TimeTracker.Tracker
   alias TimeTracker.TimeFormatter
 
-  @tick_interval 1000
-
-  def mount(_params, _session, socket) do
-    {:ok, socket}
-  end
-
   def render(assigns) do
     ~H"""
     <div
-      class={"flex items-center mt-3 p-3 bg-#{@task.color}-200 "}
+      class={"flex items-center mt-3 py-3 px-6 bg-#{@task.color}-100"}
       phx-click="toggle_task"
       phx-value-id={@task.id}
       phx-target={@myself}
     >
-      <p>{@task.is_active && inline_svg("stop") || inline_svg("start")}</p>
+      <p style="width: 32px; height: 32px; padding: 6px;">{@task.is_active && inline_svg("stop") || inline_svg("start")}</p>
 
       <h2 class="mx-6">{@task.name}</h2>
 
       <div class="flex flex-col mx-3">
-        <%!-- <p>{TimeFormatter.format(@seconds)}</p> --%>
-        <p>{TimeFormatter.format(@task.total)}</p>
+        <p class="text-sm text-gray-500">{TimeFormatter.format(0)}</p>
+        <p class="text-md text-gray-600">{TimeFormatter.format(@task.total || 0)}</p>
       </div>
+
+      <.link class="ml-auto" style="width: 32px; height: 32px; padding: 6px;" patch={~p"/tasks/#{@task.id}/edit"}>{inline_svg("edit")}</.link>
     </div>
     """
   end
