@@ -22,8 +22,8 @@ defmodule TimeTrackerWeb.TaskLive.TaskComponent do
 
       <h2 class="mx-6">{@task.name}</h2>
 
-      <div class="flex flex-col mx-3">
-        <p class="text-sm text-gray-500">{TimeFormatter.format(0)}</p>
+      <div class="flex flex-col mx-3" id={"task-#{@task.id}"} data-started-at={@task.started_at} data-total={@task.total || 0} data-active={to_string(@task.is_active)} phx-hook="TimerHook">
+        <p class="text-sm text-gray-500" id={"timer-#{@task.id}"}>{TimeFormatter.format(0)}</p>
         <p class="text-md text-gray-600">{TimeFormatter.format(@task.total || 0)}</p>
       </div>
 
