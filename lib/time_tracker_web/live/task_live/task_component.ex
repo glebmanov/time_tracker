@@ -7,12 +7,18 @@ defmodule TimeTrackerWeb.TaskLive.TaskComponent do
   def render(assigns) do
     ~H"""
     <div
-      class={"flex items-center mt-3 py-3 px-6 bg-#{@task.color}-100"}
+      class={"flex items-center mt-3 py-3 px-6 bg-#{@task.color}-100 rounded-md"}
       phx-click="toggle_task"
       phx-value-id={@task.id}
       phx-target={@myself}
     >
-      <p style="width: 32px; height: 32px; padding: 6px;">{@task.is_active && inline_svg("stop") || inline_svg("start")}</p>
+      <p style="width: 36px; height: 38px; padding: 6px;">
+        <%= if @task.is_active do %>
+          <.icon name="hero-stop" />
+        <% else %>
+          <.icon name="hero-play" />
+        <% end %>
+      </p>
 
       <h2 class="mx-6">{@task.name}</h2>
 
@@ -21,7 +27,9 @@ defmodule TimeTrackerWeb.TaskLive.TaskComponent do
         <p class="text-md text-gray-600">{TimeFormatter.format(@task.total || 0)}</p>
       </div>
 
-      <.link class="ml-auto" style="width: 32px; height: 32px; padding: 6px;" patch={~p"/tasks/#{@task.id}/edit"}>{inline_svg("edit")}</.link>
+      <.link class="ml-auto" style="width: 36px; height: 38px; padding: 6px;" patch={~p"/tasks/#{@task.id}/edit"}>
+        <.icon name="hero-pencil" />
+      </.link>
     </div>
     """
   end
