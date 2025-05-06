@@ -18,10 +18,10 @@ defmodule TimeTrackerWeb.Router do
     pipe_through :browser
 
     get "/", RedirectController, :index
-    get "/tasks", PageController, :tasks
-    get "/settings", PageController, :settings
 
-    live "/test/timer", Timer
+    live "/tasks", TaskLive.Index, :index
+    live "/tasks/new", TaskLive.Index, :new
+    live "/tasks/:id/edit", TaskLive.Index, :edit
   end
 
   # Other scopes may use custom stacks.
